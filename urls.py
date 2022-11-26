@@ -1,7 +1,7 @@
-"""naukri URL Configuration
+"""task URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
+    https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -13,26 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
-from rest_framework import routers
-from django.urls import path
-
-from django.urls import path, include
-from rest_framework import routers
 from django.contrib import admin
+from django.urls import path,include
 
-from .views import *
-
-router = routers.DefaultRouter()
-router.register(r'company', CompanyView)
-router.register(r'recruiter', RecruiterView)
-router.register(r'skill', SkillView)
-router.register(r'job', JobView)
-router.register(r'applicant', ApplicantView)
-router.register(r'experience', ExperienceView)
-router.register(r'qualification', QualificationView)
+from nestedserializer.views import Excel
 
 urlpatterns = [
-    path("", include(router.urls)),
-    path("admin/", admin.site.urls),
+    path('admin/', admin.site.urls),
+    path('naukri/', include('naukri.urls')),
+    path('nest/', include('nestedserializer.urls')),
+    path('excel/', Excel.as_view()),
+
+
+    # path('nestednaukri/', include('nestednaukri.urls')),
+
+
 ]

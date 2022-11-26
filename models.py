@@ -1,87 +1,82 @@
-from django.db import models
-
-# Create your models here.
-
 from django.contrib.auth.models import User
-from django.utils.translation import gettext_lazy as _
 from django.db import models
 
-# from phonenumber_field.formfields import PhoneNumberField
-
 # Create your models here.
-availability = (1, _('Not active')), (2, _('Active'))
-genders = (1, _('Female')), (2, _('Male')), (3, _('prefer not to say'))
-employment_type = (1, _('Full time')), (2, _('Part time'))
-industry_type = ((1, "computer and IT"), (2, "management"))
+from phonenumber_field.modelfields import PhoneNumberField
 
 
-class Company(models.Model):
-    name = models.CharField(max_length=20)
-    city = models.CharField(max_length=30)
-    location = models.TextField()
+activity = ((1, "Not Active"),
+            (2, "Active"))
+genders = ((1, "Female"),
+           (2, "Male"))
+employmenttype = ((1, "Fulltime"),
+                  (2, "Parttime"))
+industrytype = ((1, "Computer and IT"),
+                (2, "Management"))
+
+
+class Company1(models.Model):
+    name = models.CharField(max_length=30)
+    location = models.CharField(max_length=30)
     date_of_start = models.DateField()
     description = models.TextField()
 
 
-class Recruiter(models.Model):
-    name = models.CharField(max_length=20)
+class Recruiter1(models.Model):
+    name = models.CharField(max_length=30)
     address = models.TextField()
-    email = models.EmailField()
-    company = models.ForeignKey(Company, default=True, on_delete=models.SET_DEFAULT)
-    designation = models.CharField(max_length=30)
-    bate_of_birth = models.DateField()
-    gender = models.IntegerField(choices=genders, default=1)
-    phone_number = models.IntegerField()
+    email = models.EmailField(unique=True)
+    phone_num = PhoneNumberField()
+    company = models.ForeignKey(Company1, default=True, on_delete=models.CASCADE)
+    dob = models.DateField()
+    designation = models.CharField(max_length=40)
+    gender = models.IntegerField(choices=genders)
 
 
-class Skill(models.Model):
-    name = models.CharField(max_length=20)
+class Skills1(models.Model):
+    name = models.CharField(max_length=30)
     description = models.TextField()
-    # applicant = models.ManyToManyField('portal1.Skill', blank=True)
 
 
-class Job(models.Model):
-    title = models.CharField(max_length=20)
+class Job1(models.Model):
+    title = models.CharField(max_length=30)
     description = models.TextField()
-    max_salary = models.FloatField(max_length=20)
-    min_salary = models.FloatField(max_length=20)
-    employment_type = models.IntegerField(choices=employment_type)
-    max_experience = models.IntegerField()
-    min_experience = models.IntegerField()
-    company = models.ForeignKey(Company, related_name='job', default=True, on_delete=models.SET_DEFAULT)
-    location = models.TextField()
-    industry_type = models.IntegerField(choices=industry_type)
-    date_posted = models.DateField()
-    data_closed = models.DateField()
-    skill = models.ManyToManyField(Skill, blank=True)
+    max_salary = models.FloatField()
+    min_salary = models.FloatField()
+    employment_type = models.IntegerField(choices=employmenttype)
+    max_experience = models.CharField(max_length=30)
+    min_experience = models.CharField(max_length=30)
+    location = models.CharField(max_length=30)
+    skills = models.ForeignKey(Skills1, default=True, on_delete=models.SET_DEFAULT)
+    company = models.ForeignKey(Company1, default=True, on_delete=models.SET_DEFAULT)
+    industry_type = models.IntegerField(choices=industrytype)
     posted_by = models.ForeignKey(User, default=True, on_delete=models.SET_DEFAULT)
 
 
-class Applicant(models.Model):
-    name = models.CharField(max_length=20)
-    address = models.TextField()
+class Applicant1(models.Model):
+    name = models.CharField(max_length=30)
+    age = models.IntegerField()
+    phone_num = PhoneNumberField()
     email = models.EmailField()
-    company = models.CharField(max_length=20)
-    availability = models.IntegerField(choices=availability, default=1)
-    date_of_birth = models.DateField()
-    gender = models.IntegerField(choices=genders, default=1)
-    contact_number = models.IntegerField()
-    jobs = models.ForeignKey(Job, default=True, on_delete=models.SET_DEFAULT)
+    address = models.TextField()
+    dob = models.DateField()
+    job = models.ForeignKey(Job1, default=True, on_delete=models.SET_DEFAULT)
+    gender = models.IntegerField(choices=genders)
+    availability = models.IntegerField( choices=activity)
 
 
-class Experience(models.Model):
+class Experience1(models.Model):
     project_name = models.CharField(max_length=20)
     project_description = models.TextField()
     from_date = models.DateField()
     to_date = models.DateField()
-    applicant = models.ManyToManyField(Applicant, blank=True)
-    company = models.ForeignKey(Company, default=True, on_delete=models.SET_DEFAULT)
+    company_name = models.ForeignKey(Company1, default=True, on_delete=models.SET_DEFAULT)
+    applicant = models.ManyToManyField("Applicant1")
 
 
-class Qualification(models.Model):
-    name = models.CharField(max_length=20)
-    description = models.CharField(max_length=20)
+class Qualification1(models.Model):
+    Title = models.CharField(max_length=20)
+    description = models.TextField()
     from_date = models.DateField()
     to_date = models.DateField()
-    applicant = models.ForeignKey(Applicant, related_name='applicant_qualification', default=True,
-                                  on_delete=models.SET_DEFAULT)
+    applicant = models.ForeignKey("Applicant1", default=True, on_delete=models.CASCADE)

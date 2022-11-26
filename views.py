@@ -1,65 +1,68 @@
-# from django.shortcuts import render
 import uuid
 
 import pandas as pd
-from django.db.migrations import serializer
-# Create your views here.
+# from django.contrib.auth import get_user_model
+# from django.contrib.auth.decorators import login_required
+# from django.shortcuts import render
+#
+# # Create your views here.
+# from django.utils import encoding
 
-from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from rest_framework.viewsets import ModelViewSet
-
-from .models import *
-from .serialzers import *
-
-
-# Create your views here.
+from nestedserializer.serializers import *
+from nestedserializer.models import *
 
 
-class RecruiterView(viewsets.ModelViewSet):
-    queryset = Recruiter.objects.all()
-    serializer_class = Recruiter_Serialzers
+class RecruiterViewSet(ModelViewSet):
+    queryset = Recruiter1.objects.all()
+    serializer_class = Recruiter1Serializer
+    permission_classes = [AllowAny]
 
 
-class ApplicantView(viewsets.ModelViewSet):
-    queryset = Applicant.objects.all()
-    serializer_class = Applicant_Serialzers
+class CompanyViewSet(ModelViewSet):
+    queryset = Company1.objects.all()
+    serializer_class = Company1Serializer
+    permission_classes = [AllowAny]
 
 
-class CompanyView(viewsets.ModelViewSet):
-    queryset = Company.objects.all()
-    serializer_class = Company_Serialzers
+class SkillsViewSet(ModelViewSet):
+    queryset = Skills1.objects.all()
+    serializer_class = Skills1Serializer
+    permission_classes = [AllowAny]
 
 
-class JobView(viewsets.ModelViewSet):
-    queryset = Job.objects.all()
-    serializer_class = Job_Serialzers
-
-
-class SkillView(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
-    serializer_class = Skill_Serialzers
-
-
-class ExperienceView(viewsets.ModelViewSet):
-    queryset = Experience.objects.all()
-    serializer_class = Experience_Serialzers
-
-
-class QualificationView(viewsets.ModelViewSet):
-    queryset = Qualification.objects.all()
-    serializer_class = Qualification_Serialzers
+class JobViewSet(ModelViewSet):
+    queryset = Job1.objects.all()
+    serializer_class = Job1Serializer
+    permission_classes = [AllowAny]
 
 
 class Excel(APIView):
     def get(self, request, *args, **kwargs):
-        Job_obj = Job.objects.all()
-        serializers = Job_Serialzers(Job_obj, many=True)
-        df = pd.DataFrame(serializers.data)
-        print(df)
+        job_objs = Job1.objects.all()
+        serializer = Job1Serializer(job_objs, many=True)
+        df = pd.DataFrame(serializer.data)
         df.to_csv(f"static/{uuid.uuid4()}.csv", encoding="UTF-8")
         return Response({'status': 200})
+
+
+class ApplicantViewSet(ModelViewSet):
+    queryset = Applicant1.objects.all()
+    serializer_class = Applicant1Serializer
+    permission_classes = [AllowAny]
+
+
+class ExperienceViewSet(ModelViewSet):
+    queryset = Experience1.objects.all()
+    serializer_class = Experience1Serializer
+    permission_classes = [AllowAny]
+
+
+class QualificationViewSet(ModelViewSet):
+    queryset = Qualification1.objects.all()
+    serializer_class = Qualification1Serializer
+    permission_classes = [AllowAny]
