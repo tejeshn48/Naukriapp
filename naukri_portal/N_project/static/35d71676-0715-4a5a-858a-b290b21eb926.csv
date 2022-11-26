@@ -1,0 +1,2 @@
+,id,company,posted_by,title,description,max_salary,min_salary,employment_type,max_experience,min_experience,location,industry_type,skills
+0,4,"OrderedDict([('id', 1), ('name', 'wipro'), ('location', 'hyderabad'), ('date_of_start', '2022-11-01'), ('description', 'software developer')])","OrderedDict([('first_name', ''), ('last_name', '')])",backend,backend developer,20000000,2000,1,48months,10months,kondapur,1,1

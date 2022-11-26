@@ -1,0 +1,3 @@
+,id,company,skills,title,description,max_salary,min_salary,employment_type,max_experience,min_experience,location,industry_type,Posted_by
+0,1,"OrderedDict([('id', 1), ('name', 'Tesla'), ('location', 'USA'), ('date_of_start', '2019-11-24'), ('description', 'adsad')])","OrderedDict([('id', 1), ('name', 'python programer'), ('description', 'wedqdww')])",python developer,cwndwa,22324.0,2448.0,python developer,5,3,USA,IT,1
+1,2,"OrderedDict([('id', 1), ('name', 'Tesla'), ('location', 'USA'), ('date_of_start', '2019-11-24'), ('description', 'adsad')])","OrderedDict([('id', 1), ('name', 'python programer'), ('description', 'wedqdww')])",python developer,cndsqoci,234.0,234.0,python developer,5,3,USA,IT,1
