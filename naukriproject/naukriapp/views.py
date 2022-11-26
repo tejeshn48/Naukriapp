@@ -1,15 +1,13 @@
-from django.shortcuts import render
-
-# Create your views here.
 import uuid
+
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
-
-from .models import *
-from .serializer import *
 import pandas as pd
-from rest_framework.response import Response
+from .models import Company, Recruiter, Skill, Job, Applicant, Experience, Qualification
+from .serializer import CompanySerializer, RecruiterSerializer, SkillSerializer, \
+    JobSerializer, ApplicantSerializer, ExperienceSerializer, QualificationSerializer
 
 
 # Create your views here.
@@ -36,15 +34,20 @@ class Jobviewset(ModelViewSet):
     serializer_class = JobSerializer
     permissions_classes = [AllowAny]
 
+    # def create(self, request, *args, **kwargs):
+    #     User = request.User
+    #     Job.object.create(posted_by=User)
+    #     return Response({'status':200})
+
 
 class Excel(APIView):
     def get(self, request, *args, **kwargs):
-        job_objs = Job.objects.all()
-        serializer = JobSerializer(job_objs, many=True)
+        Job_objs = Job.objects.all()
+        serializer = JobSerializer(Job_objs, many = True)
         df = pd.DataFrame(serializer.data)
         print(df)
         df.to_csv(f"static/{uuid.uuid4()}.csv", encoding="UTF-8")
-        return Response({'status': 200})
+        return Response({'status':200})
 
 
 class Applicantviewset(ModelViewSet):

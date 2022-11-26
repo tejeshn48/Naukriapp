@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import *
+from .models import Company, Recruiter, Skill, Job, Applicant, Experience, Qualification
 
 
 class CompanySerializer(ModelSerializer):
@@ -16,35 +16,35 @@ class RecruiterSerializer(ModelSerializer):
         model = Recruiter
 
 
-class SkillSerializer(ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = Skill
-
-
-class UserSerializer(ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = ['first_name', 'last_name']
-
-
-class JobSerializer(ModelSerializer):
-    company = CompanySerializer(read_only=True)
-    skills = SkillSerializer(read_only=True)
-
-    class Meta:
-        fields = '__all__'
-        model = Job
-
-
 class ApplicantSerializer(ModelSerializer):
+    company = CompanySerializer(read_only=True)
+
     class Meta:
         fields = '__all__'
         model = Applicant
 
 
+class SkillSerializer(ModelSerializer):
+    applicant = ApplicantSerializer(read_only=True)
+
+    class Meta:
+        fields = '__all__'
+        model = Skill
+
+
+class JobSerializer(ModelSerializer):
+    company = CompanySerializer(read_only=True)
+    skill = SkillSerializer(read_only=True)
+    applicant = ApplicantSerializer(read_only=True)
+
+    class Meta:
+        model = Job
+        fields = '__all__'
+
+
 class ExperienceSerializer(ModelSerializer):
     company = CompanySerializer(read_only=True)
+    applicant = ApplicantSerializer(read_only=True)
 
     class Meta:
         fields = '__all__'
@@ -52,7 +52,7 @@ class ExperienceSerializer(ModelSerializer):
 
 
 class QualificationSerializer(ModelSerializer):
-    app = ApplicantSerializer(read_only=True)
+    applicant = ApplicantSerializer(read_only=True)
 
     class Meta:
         fields = '__all__'

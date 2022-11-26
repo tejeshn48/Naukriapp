@@ -10,19 +10,25 @@ Class-based views
     1. Add an import:  from other_app.views import Home
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
-    1. Import the include() function: from django.urls import include, path
+    1. Import
+
+    o include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
+from xml.etree.ElementInclude import include
+
 from django.contrib import admin
 from django.urls import path, include
 
-from naukriapp.urls import routers
-from naukriapp.views import *
+from naukriapp.views import Excel
+
+# from naukriapp.views import Excel
+
+# from naukriproject.naukriapp.views import Excel
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("excel/", Excel.as_view()),
-    path("naukriapp/", include("naukriapp.urls")),
+    path('naukri/',include('naukriapp.urls')),
+    # path('auth/',include('rest_framework.urls',namespace='rest_framework')),
+    path('excel/',Excel.as_view())
 ]
